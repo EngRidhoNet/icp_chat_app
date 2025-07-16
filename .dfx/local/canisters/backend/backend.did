@@ -1,0 +1,89 @@
+type UserId = text;
+type User = 
+ record {
+   avatar: opt text;
+   createdAt: int;
+   email: Email;
+   id: UserId;
+   isOnline: bool;
+   lastSeen: int;
+   name: text;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type OTPResult = 
+ variant {
+   err: text;
+   ok: OTPCode;
+ };
+type OTPCode = text;
+type MessageType = 
+ variant {
+   document;
+   file;
+   image;
+   "text";
+ };
+type MessageResult = 
+ variant {
+   err: text;
+   ok: MessageId;
+ };
+type MessageId = nat;
+type Message = 
+ record {
+   content: text;
+   groupId: opt GroupId;
+   id: MessageId;
+   isRead: bool;
+   messageType: MessageType;
+   receiverId: opt UserId;
+   senderId: UserId;
+   timestamp: int;
+ };
+type GroupResult = 
+ variant {
+   err: text;
+   ok: Group;
+ };
+type GroupId = text;
+type Group = 
+ record {
+   createdAt: int;
+   createdBy: UserId;
+   description: opt text;
+   id: GroupId;
+   members: vec UserId;
+   name: text;
+ };
+type Email = text;
+type AuthResult = 
+ variant {
+   err: text;
+   ok: User;
+ };
+service : {
+  createGroup: (name: text, description: opt text, createdBy: UserId,
+   members: vec UserId) -> (GroupResult);
+  generateOTP: (email: Email) -> (OTPResult);
+  getAllUsers: () -> (vec User) query;
+  getDirectMessages: (userId1: UserId, userId2: UserId) ->
+   (vec Message) query;
+  getGroupMessages: (groupId: GroupId) -> (vec Message) query;
+  getUser: (userId: UserId) -> (opt User) query;
+  getUserGroups: (userId: UserId) -> (vec Group) query;
+  health: () -> (record {
+                   status: text;
+                   timestamp: int;
+                 }) query;
+  loginUser: (email: Email) -> (AuthResult);
+  logoutUser: (userId: UserId) -> (Result);
+  registerUser: (email: Email, name: text, otpCode: OTPCode) -> (AuthResult);
+  sendDirectMessage: (senderId: UserId, receiverId: UserId, content: 
+   text, messageType: MessageType) -> (MessageResult);
+  sendGroupMessage: (senderId: UserId, groupId: GroupId, content: text,
+   messageType: MessageType) -> (MessageResult);
+}

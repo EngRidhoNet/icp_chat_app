@@ -1,0 +1,10 @@
+{
+  "icp-chat-app": {
+    "backend": {
+      "canister_id": "your_backend_canister_id"
+    },
+    "frontend": {
+      "canister_id": "your_frontend_canister_id"
+    }
+  }
+}

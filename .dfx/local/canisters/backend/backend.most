@@ -1,0 +1,41 @@
+// Version: 1.0.0
+type Email__203389312 = Text;
+type GroupId__490775132 = Text;
+type Group__428283671 =
+  {
+    createdAt : Int;
+    createdBy : UserId__971100331;
+    description : ?Text;
+    id : GroupId__490775132;
+    members : [UserId__971100331];
+    name : Text
+  };
+type MessageId__707269095 = Nat;
+type MessageType__1019746904 = {#document; #file; #image; #text};
+type Message__495409233 =
+  {
+    content : Text;
+    groupId : ?GroupId__490775132;
+    id : MessageId__707269095;
+    isRead : Bool;
+    messageType : MessageType__1019746904;
+    receiverId : ?UserId__971100331;
+    senderId : UserId__971100331;
+    timestamp : Int
+  };
+type UserId__971100331 = Text;
+type User__767892020 =
+  {
+    avatar : ?Text;
+    createdAt : Int;
+    email : Email__203389312;
+    id : UserId__971100331;
+    isOnline : Bool;
+    lastSeen : Int;
+    name : Text
+  };
+actor {
+  stable var groupsData : [(GroupId__490775132, Group__428283671)];
+  stable var messagesData : [Message__495409233];
+  stable var usersData : [(UserId__971100331, User__767892020)]
+};
